@@ -119,7 +119,87 @@
         <button id="addAnywayBtn" class="add-anyway" onclick="addAnyway()">Add Anyway</button>
     </div>
 
-   
+    <script>
+        async function fetchQuestionCount() {
+            try {
+                const response = await fetch('https://questions.cse.jaindu.me/questions/');
+                const data = await response.json();
+                document.getElementById('questionCounter').textContent = `Total Questions: ${data.total_questions}`;
+            } catch (error) {
+                document.getElementById('questionCounter').textContent = 'Failed to load count';
+            }
+        }
 
+        async function checkSimilarity() {
+            const question = document.getElementById('questionInput').value;
+            const resultDiv = document.getElementById('result');
+            const addAnywayBtn = document.getElementById('addAnywayBtn');
+
+            if (!question) {
+                resultDiv.textContent = 'Please enter a question.';
+                resultDiv.className = 'result';
+                resultDiv.style.display = 'block';
+                addAnywayBtn.style.display = 'none';
+                return;
+            }
+
+            try {
+                const response = await fetch('https://questions.cse.jaindu.me/questions/check-similarity/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ text: question })
+                });
+                const data = await response.json();
+
+                if (data.similarity_count === 0) {
+                    resultDiv.textContent = 'No similarities found. Adding question...';
+                    resultDiv.className = 'result green';
+                    await addQuestion(question);
+                    addAnywayBtn.style.display = 'none';
+                } else {
+                    resultDiv.textContent = `Found ${data.similarity_count} similarities.`;
+                    resultDiv.className = 'result red';
+                    addAnywayBtn.style.display = 'block';
+                }
+                resultDiv.style.display = 'block';
+            } catch (error) {
+                resultDiv.textContent = 'Error checking similarities.';
+                resultDiv.className = 'result';
+                resultDiv.style.display = 'block';
+                addAnywayBtn.style.display = 'none';
+            }
+        }
+
+        async function addQuestion(question) {
+            try {
+                const response = await fetch('https://questions.cse.jaindu.me/questions/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ text: question })
+                });
+                
+                const data = await response.json();
+                
+                if (!response.ok) {
+                    throw new Error(data.detail?.[0]?.msg || 'Failed to add question');
+                }
+                
+                document.getElementById('result').textContent = `Success: Question added! (ID: ${data.id})`;
+                document.getElementById('result').className = 'result green';
+                document.getElementById('addAnywayBtn').style.display = 'none';
+                fetchQuestionCount();
+            } catch (error) {
+                document.getElementById('result').textContent = `Error: ${error.message}`;
+                document.getElementById('result').className = 'result red';
+            }
+        }
+
+        function addAnyway() {
+            const question = document.getElementById('questionInput').value;
+            addQuestion(question);
+        }
+
+        fetchQuestionCount();
+    </script>
 </body>
 </html>
