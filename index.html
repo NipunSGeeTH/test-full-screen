@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test full screen</title>
+    <title>Question Similarity Checker</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -17,6 +17,95 @@
             padding: 0;
         }
 
+        .container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            width: 400px;
+            text-align: center;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        .container h1 {
+            margin-bottom: 15px;
+            font-size: 22px;
+            color: #333;
+        }
+
+        .counter {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .container textarea {
+            width: calc(100% - 20px);
+            height: 120px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            resize: none;
+            outline: none;
+            transition: border 0.3s;
+            box-sizing: border-box;
+        }
+
+        .container textarea:focus {
+            border-color: #667eea;
+        }
+
+        .container button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            background-color: #667eea;
+            color: #fff;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background 0.3s;
+            margin-top: 15px;
+            width: 100%;
+        }
+
+        .container button:hover {
+            background-color: #5a67d8;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 10px;
+            border-radius: 6px;
+            display: none;
+        }
+
+        .result.green {
+            background: #e6ffe6;
+            color: #2d862d;
+            display: block;
+        }
+
+        .result.red {
+            background: #ffe6e6;
+            color: #cc0000;
+            display: block;
+        }
+
+        .add-anyway {
+            display: none;
+            margin-top: 10px;
+            background-color: #ff9800;
+        }
+
+        .add-anyway:hover {
+            background-color: #e68900;
+        }
     </style>
 </head>
 
