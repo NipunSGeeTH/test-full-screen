@@ -1,49 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link rel="manifest" href="manifest.json">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>Hide URL Bar</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fullscreen Mode</title>
   <style>
     body {
-      margin: 0; /* Remove margin */
-      padding: 0; /* Remove padding */
-      overflow: hidden; /* Hide scrollbars */
-      height: 100vh; /* Full viewport height */
-      width: 100vw; /* Full viewport width */
-      background-color: #f4f4f4; /* Background color */
+      margin: 0;
+      height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      text-align: center;
+      background-color: #f4f4f4;
     }
-    h1 {
-      font-family: Arial, sans-serif;
-      color: #333;
+    button {
+      padding: 10px 20px;
+      font-size: 18px;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
-  <h1>Hello, Mobile Users!</h1>
+  <button onclick="goFullscreen()">Enter Fullscreen</button>
 
   <script>
-    // Function to hide the address bar
-    function hideAddressBar() {
-      window.scrollTo(0, 1); // Scroll slightly to hide address bar
+    function goFullscreen() {
+      let elem = document.documentElement; // Get full document
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      } else if (elem.mozRequestFullScreen) {
+        elem.mozRequestFullScreen(); // Firefox
+      } else if (elem.webkitRequestFullscreen) {
+        elem.webkitRequestFullscreen(); // Chrome, Safari, Edge
+      } else if (elem.msRequestFullscreen) {
+        elem.msRequestFullscreen(); // IE/Edge
+      }
     }
-
-    // Wait for page load then hide the bar
-    window.onload = function () {
-      setTimeout(hideAddressBar, 0);
-    };
-
-    // Hide address bar on orientation change or resize
-    window.onresize = hideAddressBar;
-    window.onorientationchange = hideAddressBar;
   </script>
 </body>
 </html>
